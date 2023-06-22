@@ -58,6 +58,8 @@ class Vaccine(models.Model):
         max_length = 128
     )
 
+    vaccine_date_received = models.DateField()
+
     def __str__(self):
         return self.vaccine_name
 
@@ -76,6 +78,8 @@ class Medication(models.Model):
     medication_purpose = models.CharField(
         max_length = 128
     )
+
+    medication_date_taken = models.DateTimeField()
 
     def __str__(self):
         return self.medication_name
