@@ -1,8 +1,9 @@
 PET_TYPES = [
-    "Dog",
-    "Cat",
-    "Gerbil",
-    "Hamster",
-    "Iguana",
-    ""
+    ("Dog", "Dog"),
+    ("Cat", "Cat")
+]
+
+GENDERS = [
+    ("Male", "Male"),
+    ("Female", "Female")
 ]

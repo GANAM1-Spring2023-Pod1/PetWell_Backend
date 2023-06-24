@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-from .PET_TYPES import PET_TYPES
+from .PET_TYPES import PET_TYPES, GENDERS
 
 # User Profile Model (Based on Django User)
 class UserProfile(models.Model):
@@ -20,8 +20,16 @@ class UserProfile(models.Model):
         max_length = 64
     )
 
+    user_firstname = models.CharField(
+        max_length = 64
+    )
+
+    user_lastname = models.CharField(
+        max_length = 64
+    )
+
     def __str__(self):
-        return self.username
+        return self.user_firstname
     
 class Pet(models.Model):
 
@@ -39,6 +47,12 @@ class Pet(models.Model):
         choices = PET_TYPES
     )
 
+    pet_dob = models.DateField()
+
+    pet_gender = models.CharField(
+        choices = GENDERS
+    )
+
     def __str__(self):
         return self.pet_name
     
@@ -46,7 +60,7 @@ class Vaccine(models.Model):
 
     pet = models.ManyToManyField(
         Pet,
-        on_delete = models.CASCADE
+        # on_delete = models.CASCADE
     )
 
     vaccine_name = models.CharField(
@@ -67,7 +81,7 @@ class Medication(models.Model):
 
     pet = models.ManyToManyField(
         Pet,
-        on_delete = models.CASCADE
+        # on_delete = models.CASCADE
     )
 
     medication_name = models.CharField(

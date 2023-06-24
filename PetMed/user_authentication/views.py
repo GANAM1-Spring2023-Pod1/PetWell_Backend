@@ -74,3 +74,12 @@ class SignInView(APIView):
         except:
             return Response({"Error": "An issue occurred whilst attempting to authenticate user"})
 
+def ProfileView(APIView):
+    def get(self, request):
+        try:
+            user = self.request.user
+            profile = UserProfile.objects.get(user = user)
+            json_profile = UserProfileSerializer(profile)
+            return Response({"Profile": json_profile.data})
+        except:
+            return Response({"Error": "User Profile not found"})
