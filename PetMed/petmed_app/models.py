@@ -47,6 +47,10 @@ class Pet(models.Model):
         choices = PET_TYPES
     )
 
+    pet_breed = models.CharField(
+        max_length = 128
+    )
+
     pet_dob = models.DateField()
 
     pet_gender = models.CharField(
@@ -71,6 +75,8 @@ class Vaccine(models.Model):
     )
 
     vaccine_date = models.DateField()
+
+    vaccine_end = models.DateField()
 
     def __str__(self):
         return self.vaccine_name
@@ -103,6 +109,8 @@ class Allergy(models.Model):
     )
 
     allergy = models.CharField()
+
+    allergy_desc = models.TextField()
 
     def __str__(self):
         return self.allergy

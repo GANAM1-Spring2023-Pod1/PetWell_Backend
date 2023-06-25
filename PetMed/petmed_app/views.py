@@ -18,6 +18,18 @@ class PetViewSet(viewsets.ModelViewSet):
     queryset = Pet.objects.all()
     serializer_class = PetSerializer
 
+class VaccineViewSet(viewsets.ModelViewSet):
+    queryset = Vaccine.objects.all()
+    serializer_class = VaccineSerializer
+
+class MedicationViewSet(viewsets.ModelViewSet):
+    queryset = Medication.objects.all()
+    serializer_class = MedicationSerializer
+
+class AllergyViewSet(viewsets.ModelViewSet):
+    queryset = Allergy.objects.all()
+    serializer_class = AllergySerializer
+
 class AllPetsViewSet(APIView):
     permission_classes = [
         permissions.AllowAny
@@ -62,4 +74,71 @@ class IndividualPetViewSet(APIView):
             vaccines = VaccineSerializer(vaccine_results)
             medication_results = Medication.objects.filter(pet = id)
             medications = MedicationSerializer(medication_results)
-            allergy_results = Aller
+            allergy_results = Allergy.objects.filter(pet = id)
+            allergies = AllergySerializer(allergy_results)
+            return Response({"Pet": pet.data, "Vaccines": vaccines.data, "Medications": medications.data, "Allergies": allergies.data})
+        except Exception as e:
+            print("Error Retrieving Single Pet:", e)
+            return Response({"Error": "Something went wrong"})
+        
+class IndividualVaccineViewSet(APIView):
+    permission_classes = [
+        permissions.AllowAny
+    ]
+
+    def post(self, request, id):
+        try:
+            user = self.request.user
+            isAuthenticated = user.is_authenticated
+            if isAuthenticated:
+                vaccine = request.data['vaccine']
+                vaccine_date = request.data['vaccine_date']
+                pet = Pet.objects.get(id = id)
+                Vaccine.objects.create(vaccine = vaccine, vaccine_date = vaccine_date, pet = pet)
+                return Response({"Success": "Vaccine record successfully created"})
+            else:
+                return Response({"Error": "User not authenticated; please include an authentication token"})
+        except:
+            return Response({"Error": "Error likely caused by invalid request body"})
+
+
+class IndividualMedicationViewSet(APIView):
+    permission_classes = [
+        permissions.AllowAny
+    ]
+
+    def post(self, request, id):
+        try:
+            user = self.request.user
+            isAuthenticated = user.is_authenticated
+            if isAuthenticated:
+                medication = request.data['medication']
+                medication_date = request.data['medication_date']
+                medication_frequency = request.data['medication_frequency']
+                pet = Pet.objects.get(id = id)
+                Medication.objects.create(medication = medication, medication_date = medication_date, medication_frequency = medication_frequency, pet = pet)
+                return Response({"Success": "Medication record successfully created"})
+            else:
+                return Response({"Error": "User not authenticated; please include an authentication token"})
+        except:
+            return Response({"Error": "Error likely caused by invalid request body"})
+
+
+class IndividualAllergyViewSet(APIView):
+    permission_classes = [
+        permissions.AllowAny
+    ]
+
+    def post(self, request, id):
+        try:
+            user = self.request.user
+            isAuthenticated = user.is_authenticated
+            if isAuthenticated:
+                allergy = request.data['allergy']
+                pet = Pet.objects.get(id = id)
+                Allergy.objects.create(allergy = allergy, pet = pet)
+                return Response({"Success": "Allergy record successfully created"})
+            else:
+                return Response({"Error": "User not authenticated; please include an authentication token"})
+        except:
+            return Response({"Error": "Error likely caused by invalid request body"})

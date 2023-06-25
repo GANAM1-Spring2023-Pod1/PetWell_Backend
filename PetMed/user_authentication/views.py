@@ -74,7 +74,7 @@ class SignInView(APIView):
         except:
             return Response({"Error": "An issue occurred whilst attempting to authenticate user"})
 
-def ProfileView(APIView):
+class ProfileView(APIView):
     def get(self, request):
         try:
             user = self.request.user
