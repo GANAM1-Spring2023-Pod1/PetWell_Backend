@@ -38,7 +38,7 @@ class Pet(models.Model):
         on_delete = models.CASCADE
     )
 
-    pet_name = models.CharField(
+    pet = models.CharField(
         max_length = 64
     )
 
@@ -53,47 +53,56 @@ class Pet(models.Model):
         choices = GENDERS
     )
 
+    pet_weight = models.IntegerField()
+
     def __str__(self):
-        return self.pet_name
+        return self.pet
     
 class Vaccine(models.Model):
 
-    pet = models.ManyToManyField(
+    pet = models.ForeignKey(
         Pet,
-        # on_delete = models.CASCADE
+        on_delete = models.CASCADE
     )
 
-    vaccine_name = models.CharField(
-        max_length = 64,
+    vaccine = models.CharField(
+        max_length = 128,
         unique = True
     )
 
-    vaccine_purpose = models.CharField(
-        max_length = 128
-    )
-
-    vaccine_date_received = models.DateField()
+    vaccine_date = models.DateField()
 
     def __str__(self):
         return self.vaccine_name
 
 class Medication(models.Model):
 
-    pet = models.ManyToManyField(
+    pet = models.ForeignKey(
         Pet,
-        # on_delete = models.CASCADE
+        on_delete = models.CASCADE
     )
 
-    medication_name = models.CharField(
-        max_length = 64,
-        unique = True
+    medication = models.CharField(
+        max_length = 128,
     )
 
-    medication_purpose = models.CharField(
-        max_length = 128
+    medication_frequency = models.CharField(
+        max_length = 64
     )
 
-    medication_date_taken = models.DateTimeField()
+    medication_date = models.DateTimeField()
 
     def __str__(self):
-        return self.medication_name
+        return self.medication
+    
+class Allergy(models.Model):
+
+    pet = models.ForeignKey(
+        Pet,
+        on_delete = models.CASCADE
+    )
+
+    allergy = models.CharField()
+
+    def __str__(self):
+        return self.allergy
