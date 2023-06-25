@@ -38,7 +38,7 @@ class Pet(models.Model):
         on_delete = models.CASCADE
     )
 
-    pet_name = models.CharField(
+    pet = models.CharField(
         max_length = 64
     )
 
@@ -47,53 +47,70 @@ class Pet(models.Model):
         choices = PET_TYPES
     )
 
+    pet_breed = models.CharField(
+        max_length = 128
+    )
+
     pet_dob = models.DateField()
 
     pet_gender = models.CharField(
         choices = GENDERS
     )
 
+    pet_weight = models.IntegerField()
+
     def __str__(self):
-        return self.pet_name
+        return self.pet
     
 class Vaccine(models.Model):
 
-    pet = models.ManyToManyField(
+    pet = models.ForeignKey(
         Pet,
-        # on_delete = models.CASCADE
+        on_delete = models.CASCADE
     )
 
-    vaccine_name = models.CharField(
-        max_length = 64,
+    vaccine = models.CharField(
+        max_length = 128,
         unique = True
     )
 
-    vaccine_purpose = models.CharField(
-        max_length = 128
-    )
+    vaccine_date = models.DateField()
 
-    vaccine_date_received = models.DateField()
+    vaccine_end = models.DateField()
 
     def __str__(self):
         return self.vaccine_name
 
 class Medication(models.Model):
 
-    pet = models.ManyToManyField(
+    pet = models.ForeignKey(
         Pet,
-        # on_delete = models.CASCADE
+        on_delete = models.CASCADE
     )
 
-    medication_name = models.CharField(
-        max_length = 64,
-        unique = True
+    medication = models.CharField(
+        max_length = 128,
     )
 
-    medication_purpose = models.CharField(
-        max_length = 128
+    medication_frequency = models.CharField(
+        max_length = 64
     )
 
-    medication_date_taken = models.DateTimeField()
+    medication_date = models.DateTimeField()
 
     def __str__(self):
-        return self.medication_name
+        return self.medication
+    
+class Allergy(models.Model):
+
+    pet = models.ForeignKey(
+        Pet,
+        on_delete = models.CASCADE
+    )
+
+    allergy = models.CharField()
+
+    allergy_desc = models.TextField()
+
+    def __str__(self):
+        return self.allergy
