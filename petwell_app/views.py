@@ -101,7 +101,7 @@ class IndividualPetViewSet(APIView):
                     # pet.pet_weight = pet_weight
                     # pet.pet = pet_name
                     # pet.save()
-                Pet.objects.update(pet_type = pet_type, pet_dob = pet_dob, pet_gender = pet_gender, pet_weight = pet_weight, pet = pet)
+                pet_instance.objects.update(pet_type = pet_type, pet_dob = pet_dob, pet_gender = pet_gender, pet_weight = pet_weight, pet = pet)
                 res = f'Pet {pet_instance.id} has been successfully updated'
                 return Response({"Success": res})
                 # else:
