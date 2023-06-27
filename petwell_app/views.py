@@ -92,18 +92,18 @@ class IndividualPetViewSet(APIView):
                 pet_gender = request.data['pet_gender']
                 pet_weight = request.data['pet_weight']
                 pet = request.data['pet']
-                # owner = UserProfile.objects.get(user = user)
+                owner = UserProfile.objects.get(user = user)
                 pet_instance = Pet.objects.get(id = id)
-                # if owner.id == pet_instance.owner:
+                if owner.id == pet_instance.owner:
                     # pet.pet_type = pet_type
                     # pet.pet_dob = pet_dob
                     # pet.pet_gender = pet_gender
                     # pet.pet_weight = pet_weight
                     # pet.pet = pet_name
                     # pet.save()
-                pet_instance.objects.update(pet_type = pet_type, pet_dob = pet_dob, pet_gender = pet_gender, pet_weight = pet_weight, pet = pet)
-                res = f'Pet {pet_instance.id} has been successfully updated'
-                return Response({"Success": res})
+                    Pet.objects.update(pet_type = pet_type, pet_dob = pet_dob, pet_gender = pet_gender, pet_weight = pet_weight, pet = pet)
+                    res = f'Pet {pet_instance.id} has been successfully updated'
+                    return Response({"Success": res})
                 # else:
                 #     return Response({"Error": f"User {owner.id} not authorized to update pet {pet.owner}"})
             else:
