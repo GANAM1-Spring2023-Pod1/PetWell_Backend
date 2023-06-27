@@ -123,7 +123,7 @@ class IndividualPetViewSet(APIView):
                     petProfile.delete()
                     return Response({"Success": "Pet successfully deleted"})
                 else:
-                    return Response({"Error": "User not authorized to delete pet"})
+                    return Response({"Error": f"User {userProfile.id} not authorized to delete pet with owner {petProfile.owner}"})
             else:
                 return Response({"Error": "User not authenticated; please provide an authorization token"})
         except:
