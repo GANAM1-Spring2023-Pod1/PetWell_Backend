@@ -104,7 +104,7 @@ class IndividualPetViewSet(APIView):
                     res = f'Post {id} has been successfully updated'
                     return Response({"Success": res})
                 else:
-                    return Response({"Error": "User not authorized to update"})
+                    return Response({"Error": f"User {user.id} not authorized to update pet {pet.owner}"})
             else:
                 return Response({"Error": "User not authenticated; please include an authorization token"})
         except Exception as e:
