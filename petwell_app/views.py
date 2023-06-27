@@ -71,11 +71,11 @@ class IndividualPetViewSet(APIView):
         try:
             pet_results = Pet.objects.get(id = id)
             pet = PetSerializer(pet_results)
-            vaccine_results = Vaccine.objects.filter(pet = id)
+            vaccine_results = Vaccine.objects.filter(id = pet.id)
             vaccines = VaccineSerializer(vaccine_results)
-            medication_results = Medication.objects.filter(pet = id)
+            medication_results = Medication.objects.filter(id = pet.id)
             medications = MedicationSerializer(medication_results)
-            allergy_results = Allergy.objects.filter(pet = id)
+            allergy_results = Allergy.objects.filter(id = pet.id)
             allergies = AllergySerializer(allergy_results)
             return Response({"Pet": pet.data, "Vaccines": vaccines.data, "Medications": medications.data, "Allergies": allergies.data})
         except Exception as e:
