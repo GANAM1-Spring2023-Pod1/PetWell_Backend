@@ -119,7 +119,7 @@ class IndividualPetViewSet(APIView):
             if isAuthenticated:
                 userProfile = UserProfile.objects.get(user = user)
                 petProfile = Pet.objects.get(id = id)
-                if str(userProfile.id) == str(petProfile.owner):
+                if userProfile.id == petProfile.owner:
                     petProfile.delete()
                     return Response({"Success": "Pet successfully deleted"})
                 else:
