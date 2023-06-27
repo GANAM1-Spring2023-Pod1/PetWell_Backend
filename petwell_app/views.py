@@ -110,6 +110,23 @@ class IndividualPetViewSet(APIView):
         except Exception as e:
             print("Error", e)
             return Response({"Error": "Invalid request body"})
+        
+    def delete(self, request, id):
+        try:
+            user = self.request.user
+            isAuthenticated = user.is_authenticated
+            if isAuthenticated:
+                userProfile = UserProfile.objects.get(user = user)
+                petProfile = Pet.objects.get(id = id)
+                if str(userProfile.id) == str(petProfile.owner):
+                    petProfile.delete()
+                    return Response({"Success": "Pet successfully deleted"})
+                else:
+                    return Response({"Error": "User not authorized to delete pet"})
+            else:
+                return Response({"Error": "User not authenticated; please provide an authorization token"})
+        except:
+            return Response({"Error": "Invalid Request Body"})
 
         
 class IndividualVaccineViewSet(APIView):
