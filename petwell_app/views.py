@@ -41,11 +41,12 @@ class AllPetsViewSet(APIView):
             if isAuthenticated:
                 pet = request.data['pet']
                 pet_type = request.data['pet_type']
+                pet_breed = request.data['pet_breed']
                 pet_dob = request.data['pet_dob']
                 pet_gender = request.data['pet_gender']
                 pet_weight = request.data['pet_weight']
                 owner = UserProfile.objects.get(user = user)
-                Pet.objects.create(owner = owner, pet_type = pet_type, pet_dob = pet_dob, pet_gender = pet_gender, pet_weight = pet_weight)
+                Pet.objects.create(owner = owner, pet = pet, pet_type = pet_type, pet_breed = pet_breed, pet_dob = pet_dob, pet_gender = pet_gender, pet_weight = pet_weight)
                 return Response({"Success": "Pet Successfully Created"})
             else:
                 return Response({"Error": "User not authenticated; please include an authentication token"})
@@ -90,6 +91,7 @@ class IndividualPetViewSet(APIView):
                 pet_dob = request.data['pet_dob']
                 pet_gender = request.data['pet_gender']
                 pet_weight = request.data['pet_weight']
+                pet_name = request.data['pet']
                 user = UserProfile.objects.get(user = user)
                 pet = Pet.objects.get(id = id)
                 if str(user.id) == str(pet.owner):
@@ -97,6 +99,7 @@ class IndividualPetViewSet(APIView):
                     pet.pet_dob = pet_dob
                     pet.pet_gender = pet_gender
                     pet.pet_weight = pet_weight
+                    pet.pet = pet_name
                     pet.save()
                     res = f'Post {id} has been successfully updated'
                     return Response({"Success": res})
@@ -121,8 +124,9 @@ class IndividualVaccineViewSet(APIView):
             if isAuthenticated:
                 vaccine = request.data['vaccine']
                 vaccine_date = request.data['vaccine_date']
+                vaccine_end = request.data['vaccine_end']
                 pet = Pet.objects.get(id = id)
-                Vaccine.objects.create(vaccine = vaccine, vaccine_date = vaccine_date, pet = pet)
+                Vaccine.objects.create(vaccine = vaccine, vaccine_date = vaccine_date, vaccine_end = vaccine_end, pet = pet)
                 return Response({"Success": "Vaccine record successfully created"})
             else:
                 return Response({"Error": "User not authenticated; please include an authentication token"})
