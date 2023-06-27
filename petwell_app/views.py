@@ -101,11 +101,10 @@ class IndividualPetViewSet(APIView):
                     pet_instance.pet_weight = pet_weight
                     pet_instance.pet = pet
                     pet_instance.save()
-                    # pet_instance.objects.update(pet_type = pet_type, pet_dob = pet_dob, pet_gender = pet_gender, pet_weight = pet_weight, pet = pet)
                     res = f'Pet {pet_instance.id} has been successfully updated'
                     return Response({"Success": res})
-                # else:
-                #     return Response({"Error": f"User {owner.id} not authorized to update pet {pet.owner}"})
+                else:
+                    return Response({"Error": f"User {owner.id} not authorized to update pet {pet.owner}"})
             else:
                 return Response({"Error": "User not authenticated; please include an authorization token"})
         except Exception as e:
@@ -119,7 +118,7 @@ class IndividualPetViewSet(APIView):
             if isAuthenticated:
                 userProfile = UserProfile.objects.get(user = user)
                 petProfile = Pet.objects.get(id = id)
-                if userProfile.id == petProfile.owner:
+                if userProfile.id == petProfile.owner.id:
                     petProfile.delete()
                     return Response({"Success": "Pet successfully deleted"})
                 else:
