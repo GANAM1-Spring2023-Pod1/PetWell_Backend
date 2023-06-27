@@ -38,18 +38,14 @@ class Pet(models.Model):
         on_delete = models.CASCADE
     )
 
-    pet = models.CharField(
-        max_length = 64
-    )
+    pet = models.CharField()
 
     pet_type = models.CharField(
         max_length = 64,
         choices = PET_TYPES
     )
 
-    pet_breed = models.CharField(
-        max_length = 128
-    )
+    pet_breed = models.CharField()
 
     pet_dob = models.DateField()
 

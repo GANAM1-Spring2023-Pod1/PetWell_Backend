@@ -12,14 +12,6 @@ from .serializers import UserSerializer
 class RegistrationView(APIView):
     
     permission_classes = [permissions.AllowAny]
-
-    # def get(self, request):
-    #     result = User.objects.all()
-    #     all_users = UserSerializer(
-    #         result, 
-    #         many = True
-    #     )
-    #     return Response(all_users.data)
     
     def post(self, request):
         user_data = self.request.data
@@ -27,6 +19,8 @@ class RegistrationView(APIView):
         email = user_data["email"]
         password = user_data["password"]
         confirm_password = user_data["confirm_password"]
+        user_firstname = user_data['user_firstname']
+        user_lastname = user_data['user_lastname']
         try:
             if password == confirm_password:
                 if User.objects.filter(username = username):
@@ -41,7 +35,9 @@ class RegistrationView(APIView):
                     UserProfile.objects.create(
                         user = new_user, 
                         email = email, 
-                        username = username
+                        username = username,
+                        user_firstname = user_firstname,
+                        user_lastname = user_lastname
                     )
                     return Response({
                         "Success": "User Successfully Created",

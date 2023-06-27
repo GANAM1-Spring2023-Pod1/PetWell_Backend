@@ -1,2 +1,2 @@
 release: python manage.py migrate
-web: gunicorn backend_alike.wsgi --log-file=-
+web: gunicorn petwell.wsgi --log-file=-

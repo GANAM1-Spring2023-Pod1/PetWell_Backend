@@ -41,11 +41,12 @@ class AllPetsViewSet(APIView):
             if isAuthenticated:
                 pet = request.data['pet']
                 pet_type = request.data['pet_type']
+                pet_breed = request.data['pet_breed']
                 pet_dob = request.data['pet_dob']
                 pet_gender = request.data['pet_gender']
                 pet_weight = request.data['pet_weight']
                 owner = UserProfile.objects.get(user = user)
-                Pet.objects.create(owner = owner, pet_type = pet_type, pet_dob = pet_dob, pet_gender = pet_gender, pet_weight = pet_weight)
+                Pet.objects.create(owner = owner, pet = pet, pet_type = pet_type, pet_breed = pet_breed, pet_dob = pet_dob, pet_gender = pet_gender, pet_weight = pet_weight)
                 return Response({"Success": "Pet Successfully Created"})
             else:
                 return Response({"Error": "User not authenticated; please include an authentication token"})
@@ -90,23 +91,42 @@ class IndividualPetViewSet(APIView):
                 pet_dob = request.data['pet_dob']
                 pet_gender = request.data['pet_gender']
                 pet_weight = request.data['pet_weight']
-                user = UserProfile.objects.get(user = user)
-                pet = Pet.objects.get(id = id)
-                if str(user.id) == str(pet.owner):
-                    pet.pet_type = pet_type
-                    pet.pet_dob = pet_dob
-                    pet.pet_gender = pet_gender
-                    pet.pet_weight = pet_weight
-                    pet.save()
-                    res = f'Post {id} has been successfully updated'
+                pet = request.data['pet']
+                owner = UserProfile.objects.get(user = user)
+                pet_instance = Pet.objects.get(id = id)
+                if owner.id == pet_instance.owner.id:
+                    pet_instance.pet_type = pet_type
+                    pet_instance.pet_dob = pet_dob
+                    pet_instance.pet_gender = pet_gender
+                    pet_instance.pet_weight = pet_weight
+                    pet_instance.pet = pet
+                    pet_instance.save()
+                    res = f'Pet {pet_instance.id} has been successfully updated'
                     return Response({"Success": res})
                 else:
-                    return Response({"Error": "User not authorized to update"})
+                    return Response({"Error": f"User {owner.id} not authorized to update pet {pet.owner}"})
             else:
                 return Response({"Error": "User not authenticated; please include an authorization token"})
         except Exception as e:
             print("Error", e)
             return Response({"Error": "Invalid request body"})
+        
+    def delete(self, request, id):
+        try:
+            user = self.request.user
+            isAuthenticated = user.is_authenticated
+            if isAuthenticated:
+                userProfile = UserProfile.objects.get(user = user)
+                petProfile = Pet.objects.get(id = id)
+                if userProfile.id == petProfile.owner.id:
+                    petProfile.delete()
+                    return Response({"Success": "Pet successfully deleted"})
+                else:
+                    return Response({"Error": f"User {userProfile.id} not authorized to delete pet with owner {petProfile.owner}"})
+            else:
+                return Response({"Error": "User not authenticated; please provide an authorization token"})
+        except:
+            return Response({"Error": "Invalid Request Body"})
 
         
 class IndividualVaccineViewSet(APIView):
@@ -121,8 +141,9 @@ class IndividualVaccineViewSet(APIView):
             if isAuthenticated:
                 vaccine = request.data['vaccine']
                 vaccine_date = request.data['vaccine_date']
+                vaccine_end = request.data['vaccine_end']
                 pet = Pet.objects.get(id = id)
-                Vaccine.objects.create(vaccine = vaccine, vaccine_date = vaccine_date, pet = pet)
+                Vaccine.objects.create(vaccine = vaccine, vaccine_date = vaccine_date, vaccine_end = vaccine_end, pet = pet)
                 return Response({"Success": "Vaccine record successfully created"})
             else:
                 return Response({"Error": "User not authenticated; please include an authentication token"})
