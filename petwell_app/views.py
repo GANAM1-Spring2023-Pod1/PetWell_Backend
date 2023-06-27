@@ -91,6 +91,7 @@ class IndividualPetViewSet(APIView):
                 pet_dob = request.data['pet_dob']
                 pet_gender = request.data['pet_gender']
                 pet_weight = request.data['pet_weight']
+                pet_breed = request.data['pet_breed']
                 pet = request.data['pet']
                 owner = UserProfile.objects.get(user = user)
                 pet_instance = Pet.objects.get(id = id)
@@ -99,6 +100,7 @@ class IndividualPetViewSet(APIView):
                     pet_instance.pet_dob = pet_dob
                     pet_instance.pet_gender = pet_gender
                     pet_instance.pet_weight = pet_weight
+                    pet_instance.pet_breed = pet_breed
                     pet_instance.pet = pet
                     pet_instance.save()
                     res = f'Pet {pet_instance.id} has been successfully updated'
