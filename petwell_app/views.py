@@ -94,7 +94,7 @@ class IndividualPetViewSet(APIView):
                 pet = request.data['pet']
                 owner = UserProfile.objects.get(user = user)
                 pet_instance = Pet.objects.get(id = id)
-                if owner.id == pet_instance.owner:
+                if owner.id == pet_instance.owner.id:
                     # pet.pet_type = pet_type
                     # pet.pet_dob = pet_dob
                     # pet.pet_gender = pet_gender
