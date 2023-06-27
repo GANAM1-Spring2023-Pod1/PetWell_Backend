@@ -95,13 +95,13 @@ class IndividualPetViewSet(APIView):
                 owner = UserProfile.objects.get(user = user)
                 pet_instance = Pet.objects.get(id = id)
                 if owner.id == pet_instance.owner.id:
-                    # pet.pet_type = pet_type
-                    # pet.pet_dob = pet_dob
-                    # pet.pet_gender = pet_gender
-                    # pet.pet_weight = pet_weight
-                    # pet.pet = pet_name
-                    # pet.save()
-                    pet_instance.objects.update(pet_type = pet_type, pet_dob = pet_dob, pet_gender = pet_gender, pet_weight = pet_weight, pet = pet)
+                    pet_instance.pet_type = pet_type
+                    pet_instance.pet_dob = pet_dob
+                    pet_instance.pet_gender = pet_gender
+                    pet_instance.pet_weight = pet_weight
+                    pet_instance.pet = pet
+                    pet_instance.save()
+                    # pet_instance.objects.update(pet_type = pet_type, pet_dob = pet_dob, pet_gender = pet_gender, pet_weight = pet_weight, pet = pet)
                     res = f'Pet {pet_instance.id} has been successfully updated'
                     return Response({"Success": res})
                 # else:
