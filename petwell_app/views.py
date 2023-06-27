@@ -92,9 +92,9 @@ class IndividualPetViewSet(APIView):
                 pet_gender = request.data['pet_gender']
                 pet_weight = request.data['pet_weight']
                 pet_name = request.data['pet']
-                user = UserProfile.objects.get(user = user)
+                owner = UserProfile.objects.get(user = user)
                 pet = Pet.objects.get(id = id)
-                if str(user.id) == str(pet.owner):
+                if str(owner.id) == str(pet.owner):
                     pet.pet_type = pet_type
                     pet.pet_dob = pet_dob
                     pet.pet_gender = pet_gender
@@ -104,7 +104,7 @@ class IndividualPetViewSet(APIView):
                     res = f'Post {id} has been successfully updated'
                     return Response({"Success": res})
                 else:
-                    return Response({"Error": f"User {user.id} not authorized to update pet {pet.owner}"})
+                    return Response({"Error": f"User {owner.id} not authorized to update pet {pet.owner}"})
             else:
                 return Response({"Error": "User not authenticated; please include an authorization token"})
         except Exception as e:
