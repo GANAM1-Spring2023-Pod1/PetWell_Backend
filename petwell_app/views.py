@@ -69,15 +69,32 @@ class IndividualPetViewSet(APIView):
 
     def get(self, request, id):
         try:
-            pet_results = Pet.objects.get(id = id)
+            # pet_results = Pet.objects.get(id = id)
+            # pet = PetSerializer(pet_results)
+            # vaccine_results = Vaccine.objects.filter(id = pet.id)
+            # vaccines = VaccineSerializer(vaccine_results, many = true)
+            # medication_results = Medication.objects.filter(id = pet.id)
+            # medications = MedicationSerializer(medication_results)
+            # allergy_results = Allergy.objects.filter(id = pet.id)
+            # allergies = AllergySerializer(allergy_results)
+            pet_results = Pet.objects.get(id=id)
             pet = PetSerializer(pet_results)
-            vaccine_results = Vaccine.objects.filter(id = pet.id)
-            vaccines = VaccineSerializer(vaccine_results)
-            medication_results = Medication.objects.filter(id = pet.id)
-            medications = MedicationSerializer(medication_results)
-            allergy_results = Allergy.objects.filter(id = pet.id)
-            allergies = AllergySerializer(allergy_results)
-            return Response({"Pet": pet.data, "Vaccines": vaccines.data, "Medications": medications.data, "Allergies": allergies.data})
+            
+            vaccine_results = Vaccine.objects.filter(pet=pet_results)
+            vaccines = VaccineSerializer(vaccine_results, many=True)
+            
+            medication_results = Medication.objects.filter(pet=pet_results)
+            medications = MedicationSerializer(medication_results, many=True)
+            
+            allergy_results = Allergy.objects.filter(pet=pet_results)
+            allergies = AllergySerializer(allergy_results, many=True)
+
+            return Response({
+                "Pet": pet.data, 
+                "Vaccines": vaccines.data, 
+                "Medications": medications.data, 
+                "Allergies": allergies.data
+            })
         except Exception as e:
             print("Error Retrieving Single Pet:", e)
             return Response({"Error": "Something went wrong"})
